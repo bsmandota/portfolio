@@ -63,9 +63,13 @@ function Todo() {
     localStorage.setItem("Check",JSON.stringify(newList))
   
   };
+  let autoFocus=true
+  if(checkList.length>0){
+    autoFocus=false;
+  }
   return (
-    <div className="bg-gray-800 min-h-screen flex w-screen text-center ">
-      <div className="p-3 flex flex-col w-full" >
+    <div className="bg-gray-800 min-h-screen flex w-screen justify-center text-center">
+      <div className="p-3 flex flex-col w-full lg:max-w-5xl" >
         <p className="p-1 text-center font-semibold bold text-5xl text-white ">
           Todo App
         </p>
@@ -77,7 +81,7 @@ function Todo() {
               className="h-12 w-full text-center placeholder:italic placeholder:text-white placeholder:font-bold  bg-blue-900 focus:bg-green-900 rounded-lg caret-white font-bold focus:outline-none focus:placeholder-transparent duration-300"
               placeholder="Write your Task here..."
               value={todoText}
-              autoFocus
+              autoFocus={autoFocus}
               onKeyUp={(e)=>{(e.keyCode === 13)&& handleSubmit();
               }}
               onChange={(e) => handleChange(e)}
