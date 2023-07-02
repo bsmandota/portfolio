@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import Delete from "../assets/delete-button.png";
 import Submit from "../assets/add.png";
 let localString = "";
-if (localString != null) {
-  localString = localStorage.getItem("Task");
-}
+if (localString != null) {localString = localStorage.getItem("Task");}
 let localCheck = false;
-if (localCheck != null) {
-  localCheck = localStorage.getItem("Check");
-}
+if (localCheck != null) {localCheck = localStorage.getItem("Check");}
 let localDate = "";
 if (localDate != null) {
   localDate = localStorage.getItem("Date");
@@ -33,13 +29,12 @@ function Todo() {
   const handleChange = (e) => {
     setTodoText(e.target.value);
   };
-
   const handleSubmit = () => {
     if (todoText.trim() === "") {
       return setTodoText("");
     }
     arr = [...todoList, todoText];
-    newDate = Date().slice(0, 21);
+    newDate = Date().slice(3, 21);
     newCheckList = [...checkList, check];
     newDateList = [...dateList, newDate];
     setTodoList(arr);
@@ -78,16 +73,16 @@ function Todo() {
     autoFocus = false;
   }
   return (
-    <div className="bg-gradient-to-b from-purple-800/80 to-pink-800/80 min-h-screen flex w-screen justify-center text-center">
+    <div className="bg-gradient-to-b from-purple-800/80 to-purple-500/80 min-h-screen flex w-screen justify-center text-center">
       <div className="p-2 flex flex-col w-full lg:max-w-5xl">
-        <p className="py-3 my-3 text-center text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600 font-black text-6xl">
-          Todo App
+        <p className="py-3 my-3 text-center text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-600 font-black text-6xl">
+          Task Tracker
         </p>
         <div>
           <div className="flex items-center my-3 p-2 justify-center">
             <input
               type="text"
-              className="h-14 w-full text-center placeholder:text-gray-600 placeholder:text-xl placeholder:font-bold text-black bg-purple-300 focus:bg-purple-200 rounded-lg font-bold outline-none duration-300 focus:shadow-md focus:shadow-pink-500 text-xl"
+              className="h-14 w-full text-center placeholder:text-gray-600 placeholder:text-xl placeholder:font-bold text-black bg-purple-300 focus:bg-purple-200 rounded-xl font-bold outline-none duration-300 focus:shadow-md focus:shadow-purple-500 text-xl"
               placeholder="What to do today?"
               value={todoText}
               autoFocus={autoFocus}
@@ -109,9 +104,7 @@ function Todo() {
           <div className="flex flex-col-reverse w-full content-center text-center rounded relative">
             {todoList.map((task, index) => (
               <div
-                className={`${
-                  checkList[index] ? "-order-last " : ""
-                } relative flex flex-row w-full justify-evenly rounded m-1 delay-500 transition duration-300`}
+                className={`${checkList[index] ? "-order-last " : ""} relative flex flex-row w-full justify-evenly rounded m-1.5 delay-500 duration-300`}
               >
                 <div className="flex justify-center items-center">
                   <input
@@ -122,21 +115,20 @@ function Todo() {
                     className={`${
                       checkList[index] &&
                       "focus:hover:-rotate-12 hover:-rotate-12 duration-300 "
-                    } h-6 w-6 mx-2 hover:scale-125  accent-purple-600 cursor-pointer`}
+                    } h-6 w-6 mx-2 hover:scale-125 duration-500 accent-purple-600 cursor-pointer`}
                   ></input>
                 </div>
                 <div
                   key={index}
                   className={`${
                     checkList[index]
-                      ? "bg-[#3c096c]/50 italic hover:bg-[#3c096c]/70 text-gray-300 line-through "
+                      ? "bg-[#3c096c]/50 hover:bg-[#3c096c]/70 text-gray-300 line-through"
                       : "bg-[#3c096c]/80 text-gray-300 hover:bg-[#3c096c] "
-                  } capital w-full text-center rounded min-h-12 h-auto p-2 px-4 text-2xl font-semibold text-ellipsis relative break-all container group select-none`}
+                  } w-full text-center rounded-xl min-h-12 h-auto p-3 text-2xl font-medium text-ellipsis relative break-all container group select-none`}
                 >
                   {task}
-                  <div className="absolute right-0 top-full z-50 border border-purple-300 bg-purple-900 scale-0 text-white p-1 text-sm delay-200 duration-300 group-hover:scale-75 group-hover:-translate-y-2 rounded-xl">
-                    <div className="arrow-up" key={index}></div>
-                    Added at {dateList[index]}
+                  <div className="absolute right-0 top-full z-50 border border-purple-300 bg-purple-900 scale-0 text-white font-normal text-xs delay-200 duration-300 group-hover:scale-75 group-hover:-translate-y-4 group-hover:-translate-x-2 px-2 rounded-xl">
+                    {dateList[index]}
                   </div>
                 </div>
                 <div className="flex justify-center items-center">
