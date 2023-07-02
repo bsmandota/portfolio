@@ -131,7 +131,7 @@ function Todo() {
                     checkList[index]
                       ? "bg-[#3c096c]/50 italic hover:bg-[#3c096c]/70 text-gray-300 line-through "
                       : "bg-[#3c096c]/80 text-gray-300 hover:bg-[#3c096c] "
-                  } capital w-full text-center rounded min-h-12 h-auto p-2 px-4 text-2xl font-semibold text-ellipsis relative break-all container group`}
+                  } capital w-full text-center rounded min-h-12 h-auto p-2 px-4 text-2xl font-semibold text-ellipsis relative break-all container group select-none`}
                 >
                   {task}
                   <div className="absolute right-0 top-full z-50 border border-purple-300 bg-purple-900 scale-0 text-white p-1 text-sm delay-200 duration-300 group-hover:scale-75 group-hover:-translate-y-2 rounded-xl">
