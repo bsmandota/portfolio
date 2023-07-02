@@ -1,127 +1,143 @@
 import React, { useState } from "react";
-
-let localstring = "";
-if (localstring != null || localstring.length<1) {
-  localstring = localStorage.getItem("key");
+import Delete from "../assets/delete-button.png";
+import Submit from '../assets/add.png';
+let localString = "";
+if (localString != null) {
+  localString = localStorage.getItem("Task");
 }
 let localCheck = false;
-if(localCheck != null || localStorage.getItem("Check").length < 1){
+if(localCheck != null){
   localCheck = localStorage.getItem("Check")
+}
+let localDate = "";
+if(localDate != null ){
+  localDate = localStorage.getItem("Date")
 }
 function Todo() {
   const [todoText, setTodoText] = useState("");
-  const [todoList, setTodoList] = useState(JSON.parse(localstring) || []);
+  const [todoList, setTodoList] = useState(JSON.parse(localString) || []);
   const [string] = useState("[]");
-  const [boolean] = useState("[]")
-  const [check, setCheck] = useState(false);
+  const [boolean] = useState("[]");
+  const [check] = useState(false);
   const [checkList,setCheckList] = useState(JSON.parse(localCheck) || []);
+  const [dateList, setDateList] = useState(JSON.parse(localDate) || []);
   let arr = [];
-  let newList = [];
+  let newCheckList = [];
+  let newDateList = [];
+  let newDate = "";
   if (
-    localStorage.getItem("key") == null ||
-    localStorage.getItem("key").length < 1
-  ) {
-    localStorage.setItem("key", string);
+    localStorage.getItem("Task") == null) {
+    localStorage.setItem("Task", string);
     localStorage.setItem("Check",boolean)
+    localStorage.setItem("Date",string)
   }
   const handleChange = (e) => {
     setTodoText(e.target.value)
   }
+  
   const handleSubmit = () => {
-    if (todoText.length !== 0) {
+      if(todoText.trim() === ""){return setTodoText("")}
       arr = [...todoList, todoText];
+      newDate = Date().slice(0,21);
+      newCheckList = [...checkList,check];
+      newDateList = [...dateList,newDate];
       setTodoList(arr);
-      newList = [...checkList,check];
-      setCheckList(newList);
+      console.log(newDateList)
+      setCheckList(newCheckList);
       setTodoText("");
-      console.log(arr);
-      console.log(newList);
+      setDateList(newDateList);
       updateLocalStorage();
-
-    } else {
-      alert("ABEY SAALE!");
-    }
   };
   const handleRemove = (index) => {
-    newList = [...checkList];
+    newCheckList = [...checkList];
     arr = [...todoList];
-    newList.splice(index,1)
+    newDateList = [...dateList];
+    newDateList.splice(index,1)
+    newCheckList.splice(index,1)
     arr.splice(index,1)
-    setCheckList(newList);
+    setCheckList(newCheckList);
     setTodoList(arr);
+    setDateList(newDateList);
     updateLocalStorage();
   };
   const handleCheck = (e,index) => {
-    let newList = [...checkList];
+    let newCheckList = [...checkList];
     let newCheck = e.target.checked
-    newList.splice(index,1,newCheck);
-    setCheckList(newList)
-    localStorage.setItem("Check",JSON.stringify(newList))
+    newCheckList.splice(index,1,newCheck);
+    setCheckList(newCheckList)
+    localStorage.setItem("Check",JSON.stringify(newCheckList))
   }
   const updateLocalStorage=()=>{
-    localStorage.setItem("key", JSON.stringify(arr));
-    localStorage.setItem("Check",JSON.stringify(newList))
-  
+    localStorage.setItem("Task", JSON.stringify(arr));
+    localStorage.setItem("Check",JSON.stringify(newCheckList))
+    localStorage.setItem("Date", JSON.stringify(newDateList))
   };
   let autoFocus=true
   if(checkList.length>0){
     autoFocus=false;
   }
   return (
-    <div className="bg-gray-800 min-h-screen flex w-screen justify-center text-center">
-      <div className="p-3 flex flex-col w-full lg:max-w-5xl" >
-        <p className="p-1 text-center font-semibold bold text-5xl text-white ">
+    <div className="bg-gradient-to-b from-purple-800/80 to-pink-800/80 min-h-screen flex w-screen justify-center text-center">
+      <div className="p-2 flex flex-col w-full lg:max-w-5xl" >
+        <p className="py-3 my-3 text-center text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600 font-black text-6xl" >
           Todo App
         </p>
         <div>
-          <div className="flex items-center m-2 justify-center">
+          <div className="flex items-center my-3 p-2 justify-center">
             <input
               type="text"
-              maxLength={50}
-              className="h-12 w-full text-center placeholder:italic placeholder:text-white placeholder:font-bold  bg-blue-900 focus:bg-green-900 rounded-lg caret-white font-bold focus:outline-none focus:placeholder-transparent duration-300"
-              placeholder="Write your Task here..."
+              className="h-14 w-full text-center placeholder:text-gray-600 placeholder:text-xl placeholder:font-bold text-black bg-purple-300 focus:bg-purple-200 rounded-lg caret-blue-900 font-bold outline-none duration-300 focus:shadow-md focus:shadow-pink-500 text-xl"
+              placeholder="What to do today?"
               value={todoText}
               autoFocus={autoFocus}
-              onKeyUp={(e)=>{(e.keyCode === 13)&& handleSubmit();
+              onKeyUp={(e)=>{(e.key == 'Enter')&& handleSubmit();
               }}
               onChange={(e) => handleChange(e)}
             />
-            <button
-              onClick={handleSubmit}
-              value="Submit"
-              className="mx-2 w-28 h-12 rounded-2xl hover:rounded-md bg-green-700 text-white text-center duration-300 inline font-semibold "
-            >Submit</button>
+            <div className="flex justify-center items-center">
+              <img
+                src={Submit}
+                onClick={handleSubmit}
+                className="ml-4 w-14 h-14 hover:scale-125 hover:-translate-y-1 duration-300"
+              />
+            </div>
           </div>
         </div>
         <div className=" flex flex-col w-full content-center text-center rounded">
-          {todoList.map((ele, index) => (
+          <div className="flex flex-col-reverse w-full content-center text-center rounded relative">
+          {todoList.map((task, index) => (
             <div
-              className=" flex flex-row justify-evenly rounded m-1 hover:transition duration-300"
+              className={`${checkList[index] ?"-order-last ":""} relative flex flex-row w-full justify-evenly rounded m-1 delay-500 transition duration-300 group`}
             >
+              <div className="flex justify-center items-center">
                 <input
                   key={index}
                   type="checkbox"
                   checked={checkList[index]}
-                  onClick={(e)=>handleCheck(e,index)}
-                  className="text-3xl rounded h-12 w-12 mx-2 flex accent-blue-600 align-middle decoration-blue-900 group-hover:scale-110 duration-300 z-10 before:bg-red-300"
+                  onChange={(e)=>handleCheck(e,index)}
+                  className={`${checkList[index] && "focus:hover:-rotate-12 hover:-rotate-12 duration-300 "} h-6 w-6 mx-2 hover:scale-125  accent-purple-600 cursor-pointer`}
                 ></input>
-              <p
+                </div>
+              <div
                 key={index}
-
-                className={`${checkList[index] ? "bg-green-600":"bg-blue-500"}  transform  w-full text-center rounded min-h-12 h-auto px-4 text-3xl font-semibold text-white truncate  group-hover:scale-110 duration-300`}
+                className={`${checkList[index] ? "bg-[#3c096c]/50 italic hover:bg-[#3c096c]/50 text-gray-300 line-through ":"bg-[#3c096c]/60 text-gray-300 hover:bg-[#3c096c] "} capital w-full text-center rounded min-h-12 h-auto p-2 px-4 text-2xl font-semibold text-ellipsis relative break-all container`}
               >
-                {ele}
-              </p>
-              <button
+              {task}
+              <div className="absolute right-0 top-full z-50 border border-purple-300 bg-purple-900 scale-0 text-white p-2 text-sm delay-200 duration-500 group-hover:scale-100 group-hover:translate-y-2 rounded-xl">
+                <div className="arrow-up" key={index}></div>
+                Added at {dateList[index]}</div>
+              </div>
+              <div className="flex justify-center items-center">
+              <img src={Delete}
                 key={index}
-                className="h-12 w-28 mx-2 rounded-2xl hover:rounded-md bg-red-700 text-white text-center inline font-semibold group-hover:scale-110  duration-500 "
+                className="h-12 w-12 mx-2 hover:scale-125 text-white text-center inline font-semibold duration-300 -translate-y-1 hover:-translate-y-2"
                 onClick={() => {
                   handleRemove(index);
                 }}
-              >Remove
-              </button>
+              />
+              </div>
             </div>
-          ))}
+          ))}</div>
         </div>
       </div>
     </div>

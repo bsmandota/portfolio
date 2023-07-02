@@ -1,7 +1,26 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.transform::first-letter{
+
+html{
+    font-family: 'Baloo 2', cursive;
+    background: #000;
+}
+.capital::first-letter{
     text-transform: capitalize;
 }
+
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #ccc transparent;
+    position: absolute;
+    top: -10px;
+    left: calc(50% - 10px);
+  }
