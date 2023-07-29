@@ -1,8 +1,9 @@
-import Todo from "./components/ToDo"
+import Balveer from "./components/Balveer";
+// import Time from "./components/Time"
 function App() {
     
     return(
-        <Todo />
+        <Balveer />
     )
     
 }
